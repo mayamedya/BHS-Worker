@@ -5,7 +5,7 @@ from threading import Thread
 import time
 import random
 import os
-from dotenv import load_dotenv
+import dotenv
 import subprocess
 
 load_dotenv(dotenv_path='../../.env')
@@ -108,7 +108,8 @@ while True:
             #         selectedFile_path = os.getcwd() + filePath + selectedFile_name
             #         # subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
             #         print('Printing -> ' + selectedFile_path)
-            #         os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
+                    # os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
+                    # dotenv.set_key('../../.env', "VERSION", os.environ["printCount"])
             #         time.sleep(3)
             #         continue
 
