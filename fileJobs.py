@@ -14,6 +14,7 @@ class fileJobs:
 
     def getFiles(self, folder:  int) -> list:
         pathway = self.fileLocation + str(folder)
+        print(pathway)
         return [os.path.splitext(filename)[0] for filename in os.listdir(pathway)]
 
     def saveFile(self, button: int, fileName: str, content):
