@@ -21,7 +21,7 @@ config = {
     'deviceID': os.getenv("DEVICEID"),
     'authKey': os.getenv("AUTHKEY"),
     'isRegistered': False,
-    'fileLocation': os.getcwd() + "/pdf/",
+    'fileLocation': os.getcwd() + "versions/" + os.getenv('VERSION') + "/pdf/",
     'isActive': True,
     'buttonCount': 0,
 }
