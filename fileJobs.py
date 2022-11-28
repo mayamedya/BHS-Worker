@@ -13,7 +13,7 @@ class fileJobs:
                 mkdir(self.fileLocation + str(file))
 
     def getFiles(self, folder:  int) -> list:
-        pathway = self.fileLocation + str(folder)
+        pathway = self.fileLocation + str(folder) + "/"
         print(pathway)
         return [os.path.splitext(filename)[0] for filename in os.listdir(pathway)]
 
