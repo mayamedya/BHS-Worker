@@ -18,8 +18,8 @@ for pin in gpio_pins:
     GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 config = {
-    'deviceID': 'abaaab', ##os.getenv("DEVICEID")
-    'authKey': 'abaaab', ##os.getenv("AUTHKEY")
+    'deviceID': os.getenv("DEVICEID"),
+    'authKey': os.getenv("AUTHKEY"),
     'isRegistered': False,
     'fileLocation': os.getcwd() + "/versions/" + str(os.getenv('VERSION')) + "/pdf/",
     'isActive': True,
