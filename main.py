@@ -8,6 +8,7 @@ import os
 import dotenv
 import subprocess
 
+
 dotenv.load_dotenv(dotenv_path='../../.env')
 
 GPIO.setmode(GPIO.BCM)
@@ -109,11 +110,12 @@ while True:
                     subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
                     print('Printing -> ' + selectedFile_path)
                     os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
-                    dotenv.set_key('../../.env', "VERSION", os.environ["printCount"])
+                    dotenv.set_key('../../.env', "printCount", os.environ["printCount"])
                     time.sleep(3)
                     continue
 
             print(pinStatus)
             time.sleep(1)
     except Exception as e:
+        print(e)
         print("Error")

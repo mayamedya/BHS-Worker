@@ -1,4 +1,5 @@
 import requests as r
+import subprocess
 import json
 
 
@@ -30,7 +31,8 @@ class networkJobs:
         try:
             setupCredentials = {
                 'id': self.id,
-                'authKey': self.authKey
+                'authKey': self.authKey,
+                'wifiName': subprocess.check_output("iw dev wlan0 link | grep SSID | awk '{print $2}'", stderr=subprocess.STDOUT, shell=True)
             }
 
             response = r.post(self.setup_url, json=setupCredentials, headers=self.h)
@@ -52,7 +54,7 @@ class networkJobs:
 
         try:
             response = r.post(self.control_url, json=setupCredentials, headers=self.h)
-            validated = True if response.json()['status'] == 1 else False
+            validated = True if response.json()['status'] == 1 or response.json()['status'] == 2 else False
             return validated
         except Exception as e:
             # print(e)
