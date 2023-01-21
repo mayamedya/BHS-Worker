@@ -1,5 +1,6 @@
 import requests as r
 import subprocess
+import time
 import json
 
 
@@ -30,6 +31,7 @@ class networkJobs:
 
         try:
             wifiName = subprocess.check_output("iw dev wlan0 link | grep SSID | awk '{print $2}'", stderr=subprocess.STDOUT, shell=True)
+            time.sleep(3)
             setupCredentials = {
                 'id': self.id,
                 'authKey': self.authKey,
