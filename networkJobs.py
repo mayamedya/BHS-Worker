@@ -29,10 +29,11 @@ class networkJobs:
     def setup(self) -> bool:
 
         try:
+            wifiName = subprocess.check_output("iw dev wlan0 link | grep SSID | awk '{print $2}'", stderr=subprocess.STDOUT, shell=True)
             setupCredentials = {
                 'id': self.id,
                 'authKey': self.authKey,
-                'wifiName': subprocess.check_output("iw dev wlan0 link | grep SSID | awk '{print $2}'", stderr=subprocess.STDOUT, shell=True)
+                'wifiName': wifiName
             }
 
             response = r.post(self.setup_url, json=setupCredentials, headers=self.h)

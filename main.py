@@ -99,19 +99,21 @@ while True:
                 pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
             for pin_slot in range(len(pinStatus)):
                 if pinStatus[pin_slot]:
-                    # Print
                     filePath = config['fileLocation'].replace(".", "") + str(pin_slot+1) + "/"
                     pathFiles = FJ.getFiles(pin_slot+1)
                     pathLen = len(pathFiles)
-                    selectedFile = random.randint(1, pathLen)
-                    selectedFile_name = pathFiles[selectedFile-1]
-                    selectedFile_path = os.getcwd() + filePath + selectedFile_name
-                    subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
-                    print('Printing -> ' + selectedFile_path)
-                    os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
-                    dotenv.set_key('../../.env', "printCount", os.environ["printCount"])
-                    time.sleep(3)
-                    continue
+                    if pathLen > 0:
+                        selectedFile = random.randint(1, pathLen)
+                        selectedFile_name = pathFiles[selectedFile-1]
+                        selectedFile_path = os.getcwd() + filePath + selectedFile_name
+                        subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
+                        print('Printing -> ' + selectedFile_path)
+                        os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
+                        dotenv.set_key('../../.env', "printCount", os.environ["printCount"])
+                        time.sleep(3)
+                        continue
+                    else:
+                        print("Selected buttons file is empty. Please assign a category or add story to category")
 
             print(pinStatus)
             time.sleep(1)
