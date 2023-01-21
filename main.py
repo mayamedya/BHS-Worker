@@ -7,7 +7,7 @@ import random
 import os
 import dotenv
 import subprocess
-
+import random
 
 dotenv.load_dotenv(dotenv_path='../../.env')
 
