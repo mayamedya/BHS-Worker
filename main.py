@@ -3,7 +3,6 @@ from fileJobs import fileJobs
 import RPi.GPIO as GPIO
 from threading import Thread
 import time
-import random
 import os
 import dotenv
 import subprocess
