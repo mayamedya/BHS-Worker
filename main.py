@@ -31,6 +31,7 @@ def asyncDevice():
         try:
             NJ = networkJobs(config['deviceID'], config['authKey'])
             config['isRegistered'] = NJ.isRegistered()
+            config['isActive'] = NJ.isActive()
             bc = NJ.getButtonCount()
             if bc > 0:
                 config['buttonCount'] = bc

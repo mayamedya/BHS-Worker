@@ -64,6 +64,21 @@ class networkJobs:
             # print(e)
             return False
 
+    def isActive(self) -> bool:
+
+        setupCredentials = {
+            'id': self.id,
+            'authKey': self.authKey
+        }
+
+        try:
+            response = r.post(self.control_url, json=setupCredentials, headers=self.h)
+            validated = True if response.json()['status'] == 1 else False
+            return validated
+        except Exception as e:
+            # print(e)
+            return False
+
     def getButtonCount(self) -> int:
 
         setupCredentials = {
