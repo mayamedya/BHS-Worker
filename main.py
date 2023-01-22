@@ -8,7 +8,7 @@ import dotenv
 import subprocess
 import random
 
-dotenv.load_dotenv(dotenv_path='home/pi/Desktop/BHS-Upgrader/.env')
+dotenv.load_dotenv(dotenv_path='/home/pi/Desktop/BHS-Upgrader/.env')
 
 GPIO.setmode(GPIO.BCM)
 
@@ -25,8 +25,6 @@ config = {
     'isActive': False,
     'buttonCount': 0,
 }
-
-print(config['deviceID'], config['authKey'])
 
 def asyncDevice():
     while True:
