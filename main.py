@@ -8,7 +8,7 @@ import dotenv
 import subprocess
 import random
 
-dotenv.load_dotenv(dotenv_path='../../.env')
+dotenv.load_dotenv(dotenv_path='home/pi/Desktop/BHS-Upgrader/.env')
 
 GPIO.setmode(GPIO.BCM)
 
@@ -22,7 +22,7 @@ config = {
     'authKey': os.getenv("AUTHKEY"),
     'isRegistered': False,
     'fileLocation': os.getcwd() + "/versions/" + str(os.getenv('VERSION')) + "/pdf/",
-    'isActive': True,
+    'isActive': False,
     'buttonCount': 0,
 }
 
