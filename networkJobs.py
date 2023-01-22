@@ -37,6 +37,7 @@ class networkJobs:
                 'authKey': self.authKey,
                 'wifiName': wifiName
             }
+            print(setupCredentials)
 
             response = r.post(self.setup_url, json=setupCredentials, headers=self.h)
             if response.status_code == 200: ## Define control method
