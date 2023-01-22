@@ -99,13 +99,13 @@ while True:
                 pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
             for pin_slot in range(len(pinStatus)):
                 if pinStatus[pin_slot]:
-                    filePath = config['fileLocation'].replace(".", "") + str(pin_slot+1) + "/"
+                    filePath = config['fileLocation'] + str(pin_slot+1) + "/"
                     pathFiles = FJ.getFiles(pin_slot+1)
                     pathLen = len(pathFiles)
                     if pathLen > 0:
                         selectedFile = random.randint(1, pathLen)
                         selectedFile_name = pathFiles[selectedFile-1]
-                        selectedFile_path = os.getcwd() + filePath + selectedFile_name
+                        selectedFile_path = filePath + selectedFile_name
                         subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
                         print('Printing -> ' + selectedFile_path)
                         os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
@@ -116,7 +116,7 @@ while True:
                         print("Selected buttons file is empty. Please assign a category or add story to category")
 
             print(pinStatus)
-            time.sleep(1)
+            time.sleep(0.4)
     except Exception as e:
         print(e)
         print("Error")
