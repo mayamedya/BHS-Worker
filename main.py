@@ -26,6 +26,7 @@ config = {
     'buttonCount': 0,
 }
 
+print(config['deviceID'], config['authKey'])
 
 def asyncDevice():
     while True:
