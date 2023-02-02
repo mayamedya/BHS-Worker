@@ -56,6 +56,15 @@ def asyncDevice():
                     content = NJ.downloadFile(file)
                     FJ.saveFile(folder+1, file, content)
 
+            for folder in range(config['buttonCount']):
+                path = config['fileLocation'] + str(folder+1)
+                files = os.listdir(path)
+                for file in files:
+                    lpath = config['fileLocation'] + str(folder + 1)
+                    lpath += "/" + file
+                    if os.path.getsize(lpath) < 10:
+                        os.remove(lpath)
+
             # print(jobList)
             time.sleep(10)
         except Exception as e:
@@ -97,23 +106,26 @@ while True:
             pinStatus = []
             for pin in range(config['buttonCount']):
                 pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
-            for pin_slot in range(len(pinStatus)):
-                if pinStatus[pin_slot]:
-                    filePath = config['fileLocation'] + str(pin_slot+1) + "/"
-                    pathFiles = FJ.getFiles(pin_slot+1)
-                    pathLen = len(pathFiles)
-                    if pathLen > 0:
-                        selectedFile = random.randint(1, pathLen)
-                        selectedFile_name = pathFiles[selectedFile-1]
-                        selectedFile_path = filePath + selectedFile_name
-                        subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
-                        print('Printing -> ' + selectedFile_path)
-                        os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
-                        dotenv.set_key('../../.env', "printCount", os.environ["printCount"])
-                        time.sleep(3)
-                        continue
-                    else:
-                        print("Selected buttons file is empty. Please assign a category or add story to category")
+
+            if True in pinStatus:
+                for pin_slot in range(len(pinStatus)):
+                    if pinStatus[pin_slot]:
+                        filePath = config['fileLocation'] + str(pin_slot+1) + "/"
+                        pathFiles = FJ.getFiles(pin_slot+1)
+                        pathLen = len(pathFiles)
+                        if pathLen > 0:
+                            selectedFile = random.randint(1, pathLen)
+                            selectedFile_name = pathFiles[selectedFile-1]
+                            selectedFile_path = filePath + selectedFile_name
+                            subprocess.run(['cancel', '-a']);
+                            subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
+                            print('Printing -> ' + selectedFile_path)
+                            os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
+                            dotenv.set_key('../../.env', "printCount", os.environ["printCount"])
+                            time.sleep(3)
+                            continue
+                        else:
+                            print("Selected buttons file is empty. Please assign a category or add story to category")
 
             print(pinStatus)
             time.sleep(0.4)
