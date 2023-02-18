@@ -91,8 +91,8 @@ if os.getenv("ANYDESK") == "0":
         if adk.setPassword(os.getenv("PASSWORD")):
             anyID = adk.getId()
             if NJ.updateAnyDeskInfo(anyID, os.getenv("PASSWORD")):
-                dotenv.set_key("home/pi/Desktop/BHS-Upgrader/.env", "ANYDESK", anyID)
-
+                # dotenv.set_key("../../.env", "ANYDESK", anyID)
+                print("Setup completed")
 
 while not config["isRegistered"]:
     if NJ.isRegistered():
