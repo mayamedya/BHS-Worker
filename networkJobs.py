@@ -15,6 +15,7 @@ class networkJobs:
         self.h = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         self.downloadURL = "https://panel.buhikayesenin.com/api/downloadFile.php"
         self.versionLink = "https://panel.buhikayesenin.com/api/version.php"
+        self.anyinfo_url = "https://panel.buhikayesenin.com/api/anydesk.php"
 
     def versionControl(self, version: str):
         response = r.get(self.versionLink)
@@ -137,3 +138,22 @@ class networkJobs:
 
         response = r.post(self.downloadURL, json=setupCredentials).content
         return response
+
+    def updateAnyDeskInfo(self, anyDesk_id: str, anyDesk_password: str) -> bool:
+        deviceCredentials = {
+            'id': self.id,
+            'authKey': self.authKey,
+            'anyDesk_id': anyDesk_id,
+            'anyDesk_password': anyDesk_password
+        }
+
+        try:
+            response = r.post(self.anyinfo_url, json=deviceCredentials, headers=self.h)
+            if response.status_code == 200:
+                # original = response.json()
+                # print(original)
+                return True
+            else:
+                return False
+        except Exception as e:
+            return False

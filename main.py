@@ -7,6 +7,9 @@ import os
 import dotenv
 import subprocess
 import random
+from anydesk import anydesk
+
+adk = anydesk()
 
 dotenv.load_dotenv(dotenv_path='home/pi/Desktop/BHS-Upgrader/.env')
 
@@ -82,6 +85,13 @@ if not NJ.isRegistered():
 else:
     config['isRegistered'] = True
 
+if os.getenv("ANYDESK") == "0":
+    if adk.generateId():
+        if adk.setPassword(os.getenv("PASSWORD")):
+            anyID = adk.getId()
+            if NJ.updateAnyDeskInfo(anyID, os.getenv("PASSWORD")):
+                dotenv.set_key("home/pi/Desktop/BHS-Upgrader/.env", "ANYDESK", anyID)
+
 
 while not config["isRegistered"]:
     if NJ.isRegistered():
@@ -121,7 +131,7 @@ while True:
                             subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
                             print('Printing -> ' + selectedFile_path)
                             os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
-                            dotenv.set_key('../../.env', "printCount", os.environ["printCount"])
+                            dotenv.set_key('home/pi/Desktop/BHS-Upgrader/.env', "printCount", os.environ["printCount"])
                             time.sleep(3)
                             continue
                         else:
