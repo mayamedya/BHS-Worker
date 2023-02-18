@@ -16,11 +16,11 @@ dotenv.load_dotenv(dotenv_path='home/pi/Desktop/BHS-Upgrader/.env')
 GPIO.setmode(GPIO.BCM)
 
 gpio_pins = [16, 5, 25, 19, 27, 23]
-total_pins = [2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 24, 26]
+# total_pins = [2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 24, 26]
 
-for pin in total_pins:
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, 1)
+# for pin in total_pins:
+#     GPIO.setup(pin, GPIO.OUT)
+#     GPIO.output(pin, 1)
 
 for pin in gpio_pins:
     GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
