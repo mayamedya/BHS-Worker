@@ -8,7 +8,7 @@ class anydesk:
 
     def setPassword(self, password: str) -> bool:
         try:
-            run(['echo', '"' + password + '"', "|", "sudo", "anydesk",  "--set-password"], capture_output=True)
+            run(['echo', "'" + password + "'", "|", "sudo", "anydesk",  "--set-password"], capture_output=True)
             return True
         except Exception as e:
             return False
