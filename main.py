@@ -87,6 +87,7 @@ else:
 
 if os.getenv("ANYDESK") == "0":
     if adk.generateId():
+        time.sleep(10)
         if adk.setPassword(os.getenv("PASSWORD")):
             anyID = adk.getId()
             if NJ.updateAnyDeskInfo(anyID, os.getenv("PASSWORD")):
