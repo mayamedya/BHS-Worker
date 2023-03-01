@@ -1,6 +1,7 @@
 from networkJobs import networkJobs
 from fileJobs import fileJobs
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
+import keyboard
 from threading import Thread
 import time
 import os
@@ -13,17 +14,13 @@ adk = anydesk()
 
 dotenv.load_dotenv(dotenv_path='home/pi/Desktop/BHS-Upgrader/.env')
 
-GPIO.setmode(GPIO.BCM)
+# GPIO.setmode(GPIO.BCM)
 
 gpio_pins = [16, 5, 25, 19, 27, 23]
-# total_pins = [2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 24, 26]
+keyboard_pins = ["1", "2", "3", "4", "5", "6"]
 
-# for pin in total_pins:
-#     GPIO.setup(pin, GPIO.OUT)
-#     GPIO.output(pin, 1)
-
-for pin in gpio_pins:
-    GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# for pin in gpio_pins:
+#     GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 config = {
     'deviceID': os.getenv("DEVICEID"),
@@ -117,12 +114,21 @@ deviceAsync = Thread(target=asyncDevice)
 deviceAsync.start()
 FJ = fileJobs(config['buttonCount'], config['fileLocation'])
 
+
+def controlKey(input_key):
+    if keyboard.read_key() == input_key:
+        return True
+    else:
+        return False
+
+
 while True:
     try:
         if config['isActive'] and config['isRegistered']:
             pinStatus = []
             for pin in range(config['buttonCount']):
-                pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
+                # pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
+                pinStatus.append(controlKey(keyboard_pins[pin]))
 
             if True in pinStatus:
                 for pin_slot in range(len(pinStatus)):
