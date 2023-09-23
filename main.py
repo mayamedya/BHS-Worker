@@ -118,7 +118,7 @@ FJ = fileJobs(config['buttonCount'], config['fileLocation'])
 
 def controlKey(input_key):
     try:
-        input_key = int(input_key.replace("'", ''))
+        input_key = int(str(input_key).replace("'", ''))
     except Exception as e:
         lsp = []
         for i in range(config['buttonCount']):
