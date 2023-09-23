@@ -138,7 +138,8 @@ def controlKey(input_key):
 
 def onButtonPress(key):
     # print(key)
-    pass
+    if str(key).replace("'", '') == 'q':
+        quit()
 
 def onButtonRelease(pushedButton):
     try:
