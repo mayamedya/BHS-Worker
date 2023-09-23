@@ -161,8 +161,8 @@ def onButtonRelease(pushedButton):
                             subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
                             print('Printing -> ' + selectedFile_path)
                             os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
-                            dotenv.set_key('home/pi/Desktop/BHS-Upgrader/.env', "printCount", os.environ["printCount"])
-                            time.sleep(3)
+                            # dotenv.set_key('home/pi/Desktop/BHS-Upgrader/.env', "printCount", os.environ["printCount"])
+                            time.sleep(5)
                             continue
                         else:
                             print("Selected buttons file is empty. Please assign a category or add story to category")
