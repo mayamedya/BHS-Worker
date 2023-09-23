@@ -123,7 +123,7 @@ def controlKey(input_key):
         lsp = []
         for i in range(config['buttonCount']):
             lsp.append(False)
-        print(e)
+        # print(e)
         return lsp
 
     lsl = []
@@ -137,7 +137,8 @@ def controlKey(input_key):
     return lsl
 
 def onButtonPress(key):
-    print(key)
+    # print(key)
+    pass
 
 def onButtonRelease(pushedButton):
     try:
