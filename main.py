@@ -169,7 +169,7 @@ def onButtonRelease(pushedButton):
                         else:
                             print("Selected buttons file is empty. Please assign a category or add story to category")
 
-            print(pinStatus)
+            # print(pinStatus)
             time.sleep(0.4)
     except Exception as e:
         print(e)
