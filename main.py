@@ -1,7 +1,8 @@
 from networkJobs import networkJobs
 from fileJobs import fileJobs
 # import RPi.GPIO as GPIO
-import keyboard
+# import keyboard
+from pynput.keyboard import Key, Listener
 from threading import Thread
 import time
 import os
@@ -16,7 +17,7 @@ dotenv.load_dotenv(dotenv_path='home/pi/Desktop/BHS-Upgrader/.env')
 
 # GPIO.setmode(GPIO.BCM)
 
-gpio_pins = [16, 5, 25, 19, 27, 23]
+# gpio_pins = [16, 5, 25, 19, 27, 23]
 keyboard_pins = ["1", "2", "3", "4", "5", "6"]
 
 # for pin in gpio_pins:
@@ -71,7 +72,7 @@ def asyncDevice():
                         os.remove(lpath)
 
             # print(jobList)
-            time.sleep(3600000)
+            time.sleep(3600)
         except Exception as e:
             print(e)
             time.sleep(10)
@@ -116,19 +117,26 @@ FJ = fileJobs(config['buttonCount'], config['fileLocation'])
 
 
 def controlKey(input_key):
-    if keyboard.read_key() == input_key:
-        return True
-    else:
-        return False
+    lsl = []
+    for i in range(config['buttonCount']):
+        apData = False
+        if i+1 == input_key:
+            apData = True
 
+        lsl.append(apData)
 
-while True:
+    return lsl
+
+def onButtonPress(key):
+    print(key)
+
+def onButtonRelease(pushedButton):
     try:
         if config['isActive'] and config['isRegistered']:
-            pinStatus = []
-            for pin in range(config['buttonCount']):
-                # pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
-                pinStatus.append(controlKey(keyboard_pins[pin]))
+            pinStatus = controlKey(pushedButton)
+            # for pin in range(config['buttonCount']):
+            #     # pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
+            #     pinStatus.append(controlKey(keyboard_pins[pin]))
 
             if True in pinStatus:
                 for pin_slot in range(len(pinStatus)):
@@ -155,3 +163,7 @@ while True:
     except Exception as e:
         print(e)
         print("Error")
+
+
+with Listener(on_press=onButtonPress, on_release=onButtonRelease) as listener:
+    listener.join()
