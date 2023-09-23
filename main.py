@@ -117,6 +117,14 @@ FJ = fileJobs(config['buttonCount'], config['fileLocation'])
 
 
 def controlKey(input_key):
+    try:
+        input_key = int(input_key)
+    except:
+        lsp = []
+        for i in range(config['buttonCount']):
+            lsp.append(False)
+        return lsp
+
     lsl = []
     for i in range(config['buttonCount']):
         apData = False
