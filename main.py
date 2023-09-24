@@ -168,7 +168,7 @@ def onButtonRelease(pushedButton, listener):
                             os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
                             # dotenv.set_key('home/pi/Desktop/BHS-Upgrader/.env', "printCount", os.environ["printCount"])
                             listener.stop()
-                            listener.join()
+                            # listener.join()
                             time.sleep(5)
                             config['isDelayAvailable'] = False
                             run_listener()
