@@ -142,7 +142,7 @@ def onButtonPress(key):
         quit()
 
 
-def onButtonRelease(pushedButton):
+def onButtonRelease(pushedButton, listener):
     try:
 
         if config['isDelayAvailable'] == True:
@@ -167,8 +167,11 @@ def onButtonRelease(pushedButton):
                             print('Printing -> ' + selectedFile_path)
                             os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
                             # dotenv.set_key('home/pi/Desktop/BHS-Upgrader/.env', "printCount", os.environ["printCount"])
+                            listener.stop()
+                            listener.join()
                             time.sleep(5)
                             config['isDelayAvailable'] = False
+                            run_listener()
                             continue
                         else:
                             print("Selected buttons file is empty. Please assign a category or add story to category")
@@ -190,7 +193,7 @@ def is_time_in_range(start, end):
 
 
 def run_listener():
-    listener = Listener(on_press=onButtonPress, on_release=onButtonRelease)
+    listener = Listener(on_press=None, on_release=lambda key: onButtonRelease(key, listener))
     listener.start()
     return listener
 
@@ -204,6 +207,6 @@ while True:
     else:
         if listener is not None and listener.is_alive():
             listener.stop()
-            listener.join()  # wait for the listener to fully stop
-            listener = None  # clear the reference
+            listener.join()
+            listener = None
     time.sleep(30)
