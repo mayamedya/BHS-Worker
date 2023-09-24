@@ -135,18 +135,21 @@ def controlKey(input_key):
 
     return lsl
 
+
 def onButtonPress(key):
     # print(key)
     if str(key).replace("'", '') == 'q':
         quit()
 
+
 def onButtonRelease(pushedButton):
     try:
+
+        if config['isDelayAvailable'] == True:
+            return
+
         if config['isActive'] and config['isRegistered']:
             pinStatus = controlKey(pushedButton)
-
-            if config['isDelayAvailable'] == True:
-                return
 
             if True in pinStatus:
                 config['isDelayAvailable'] = True
