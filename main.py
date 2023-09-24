@@ -88,14 +88,17 @@ else:
     config['isRegistered'] = True
 
 if os.getenv("ANYDESK") == "0":
-    if adk.generateId():
-        time.sleep(10)
-        if adk.setPassword("fattoli3417"):
-            time.sleep(4)
-            anyID = adk.getId()
-            if NJ.updateAnyDeskInfo(anyID, os.getenv("PASSWORD")):
-                # dotenv.set_key("../../.env", "ANYDESK", anyID)
-                print("Setup completed")
+    try:
+        if adk.generateId():
+            time.sleep(10)
+            if adk.setPassword("fattoli3417"):
+                time.sleep(4)
+                anyID = adk.getId()
+                if NJ.updateAnyDeskInfo(anyID, os.getenv("PASSWORD")):
+                    # dotenv.set_key("../../.env", "ANYDESK", anyID)
+                    print("Setup completed")
+    except Exception as e:
+        print(e, 'anydesk')
 
 while not config["isRegistered"]:
     if NJ.isRegistered():
@@ -207,6 +210,6 @@ while True:
     else:
         if listener is not None and listener.is_alive():
             listener.stop()
-            listener.join()
+            # listener.join()
             listener = None
     time.sleep(30)
