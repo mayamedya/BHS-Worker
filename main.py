@@ -1,3 +1,4 @@
+import datetime
 from networkJobs import networkJobs
 from fileJobs import fileJobs
 # import RPi.GPIO as GPIO
@@ -15,13 +16,7 @@ adk = anydesk()
 
 dotenv.load_dotenv(dotenv_path='home/pi/Desktop/BHS-Upgrader/.env')
 
-# GPIO.setmode(GPIO.BCM)
-
-# gpio_pins = [16, 5, 25, 19, 27, 23]
 keyboard_pins = ["1", "2", "3", "4", "5", "6"]
-
-# for pin in gpio_pins:
-#     GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 config = {
     'deviceID': os.getenv("DEVICEID"),
@@ -30,6 +25,10 @@ config = {
     'fileLocation': os.getcwd() + "/versions/" + str(os.getenv('VERSION')) + "/pdf/",
     'isActive': False,
     'buttonCount': 0,
+    'isBetweenTime': False,
+    'deviceStartTime': datetime.time(9, 0),
+    'deviceEndTime': datetime.time(17, 0),
+    'isDelayAvailable': False
 }
 
 def asyncDevice():
@@ -145,11 +144,12 @@ def onButtonRelease(pushedButton):
     try:
         if config['isActive'] and config['isRegistered']:
             pinStatus = controlKey(pushedButton)
-            # for pin in range(config['buttonCount']):
-            #     # pinStatus.append(False if int(GPIO.input(gpio_pins[pin])) == 0 else True)
-            #     pinStatus.append(controlKey(keyboard_pins[pin]))
+
+            if config['isDelayAvailable'] == True:
+                return
 
             if True in pinStatus:
+                config['isDelayAvailable'] = True
                 for pin_slot in range(len(pinStatus)):
                     if pinStatus[pin_slot]:
                         filePath = config['fileLocation'] + str(pin_slot+1) + "/"
@@ -165,9 +165,12 @@ def onButtonRelease(pushedButton):
                             os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
                             # dotenv.set_key('home/pi/Desktop/BHS-Upgrader/.env', "printCount", os.environ["printCount"])
                             time.sleep(5)
+                            config['isDelayAvailable'] = False
                             continue
                         else:
                             print("Selected buttons file is empty. Please assign a category or add story to category")
+                            time.sleep(3)
+                            config['isDelayAvailable'] = False
 
             # print(pinStatus)
             time.sleep(0.4)
@@ -175,6 +178,29 @@ def onButtonRelease(pushedButton):
         print(e)
         print("Error")
 
+def is_time_in_range(start, end):
+    current_time = datetime.datetime.now().time()
+    if start <= end:
+        return start <= current_time <= end
+    else:
+        return start <= current_time or current_time <= end
 
-with Listener(on_press=onButtonPress, on_release=onButtonRelease) as listener:
-    listener.join()
+
+def run_listener():
+    listener = Listener(on_press=onButtonPress, on_release=onButtonRelease)
+    listener.start()
+    return listener
+
+
+listener = run_listener()
+
+while True:
+    if is_time_in_range(config['deviceStartTime'], config['deviceEndTime']):
+        if listener is None or not listener.is_alive():
+            listener = run_listener()
+    else:
+        if listener is not None and listener.is_alive():
+            listener.stop()
+            listener.join()  # wait for the listener to fully stop
+            listener = None  # clear the reference
+    time.sleep(30)
