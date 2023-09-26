@@ -74,7 +74,7 @@ def asyncDevice():
                         os.remove(lpath)
 
             # print(jobList)
-            time.sleep(3600)
+            time.sleep(300)
         except Exception as e:
             print(e)
             time.sleep(10)
