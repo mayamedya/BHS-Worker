@@ -136,8 +136,12 @@ class networkJobs:
             'fileName': file
         }
 
-        response = r.post(self.downloadURL, json=setupCredentials).content
-        return response
+        try:
+            response = r.post(self.downloadURL, json=setupCredentials).content
+            return response
+        except Exception as e:
+            print(e)
+            return False
 
     def updateAnyDeskInfo(self, anyDesk_id: str, anyDesk_password: str) -> bool:
         deviceCredentials = {

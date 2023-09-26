@@ -27,9 +27,10 @@ config = {
     'buttonCount': 0,
     'isBetweenTime': False,
     'deviceStartTime': datetime.time(9, 0),
-    'deviceEndTime': datetime.time(17, 0),
+    'deviceEndTime': datetime.time(20, 0),
     'isDelayAvailable': False
 }
+
 
 def asyncDevice():
     while True:
@@ -59,6 +60,8 @@ def asyncDevice():
                 FJ.deleteFiles(folder+1, jobList[folder][0])
                 for file in jobList[folder][1]:
                     content = NJ.downloadFile(file)
+                    if not content:
+                        continue
                     FJ.saveFile(folder+1, file, content)
 
             for folder in range(config['buttonCount']):
@@ -187,6 +190,7 @@ def onButtonRelease(pushedButton, listener):
         print(e)
         print("Error")
 
+
 def is_time_in_range(start, end):
     current_time = datetime.datetime.now().time()
     if start <= end:
@@ -210,6 +214,6 @@ while True:
     else:
         if listener is not None and listener.is_alive():
             listener.stop()
-            # listener.join()
+            listener.join()
             listener = None
     time.sleep(30)
