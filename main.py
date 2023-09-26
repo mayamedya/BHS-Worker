@@ -208,11 +208,16 @@ def run_listener():
 listener = run_listener()
 
 while True:
+    print('Is Starting?')
     if is_time_in_range(config['deviceStartTime'], config['deviceEndTime']):
+        print('True 1')
         if listener is None or not listener.is_alive():
+            print('true 2')
             listener = run_listener()
     else:
+        print('false 1')
         if listener is not None and listener.is_alive():
+            print('false 2')
             listener.stop()
             listener.join()
             listener = None
