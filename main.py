@@ -27,7 +27,7 @@ config = {
     'buttonCount': 0,
     'isBetweenTime': False,
     'deviceStartTime': datetime.time(9, 0),
-    'deviceEndTime': datetime.time(20, 0),
+    'deviceEndTime': datetime.time(17, 0),
     'isDelayAvailable': False
 }
 
@@ -190,7 +190,6 @@ def onButtonRelease(pushedButton, listener):
         print(e)
         print("Error")
 
-
 def is_time_in_range(start, end):
     current_time = datetime.datetime.now().time()
     if start <= end:
@@ -208,17 +207,12 @@ def run_listener():
 listener = run_listener()
 
 while True:
-    print('Is Starting?')
     if is_time_in_range(config['deviceStartTime'], config['deviceEndTime']):
-        print('True 1')
         if listener is None or not listener.is_alive():
-            print('true 2')
             listener = run_listener()
     else:
-        print('false 1')
         if listener is not None and listener.is_alive():
-            print('false 2')
             listener.stop()
-            listener.join()
+            # listener.join()
             listener = None
     time.sleep(30)
