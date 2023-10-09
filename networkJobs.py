@@ -58,6 +58,11 @@ class networkJobs:
         }
 
         try:
+            req = r.get('http://clients3.google.com/generate_204')
+            if req.status_code != 204:
+                print("No internet connection found... Activating device at local mode")
+                return True
+
             response = r.post(self.control_url, json=setupCredentials, headers=self.h)
             validated = True if response.json()['status'] == 1 or response.json()['status'] == 2 else False
             return validated
@@ -73,6 +78,11 @@ class networkJobs:
         }
 
         try:
+            req = r.get('http://clients3.google.com/generate_204')
+            if req.status_code != 204:
+                print("No internet connection found... Activating device at local mode")
+                return True
+
             response = r.post(self.control_url, json=setupCredentials, headers=self.h)
             validated = True if response.json()['status'] == 1 else False
             return validated
@@ -88,11 +98,16 @@ class networkJobs:
         }
 
         try:
+            req = r.get('http://clients3.google.com/generate_204')
+            if req.status_code != 204:
+                print("No internet connection found... Activating device at local mode")
+                return 6
+
             response = r.post(self.buttonCount_url, json=setupCredentials, headers=self.h)
             return int(response.json()['count'])
         except Exception as e:
             print(e)
-            return 0
+            return 6
 
     def asyncFiles(self, currentFiles: list) -> list:
 
@@ -102,6 +117,11 @@ class networkJobs:
         }
 
         try:
+            req = r.get('http://clients3.google.com/generate_204')
+            if req.status_code != 204:
+                print("No internet connection found... Activating device at local mode")
+                return []
+
             response = r.post(self.async_url, json=deviceCredentials, headers=self.h)
             if response.status_code == 200:
                 original = response.json()
@@ -152,6 +172,7 @@ class networkJobs:
         }
 
         try:
+
             response = r.post(self.anyinfo_url, json=deviceCredentials, headers=self.h)
             if response.status_code == 200:
                 # original = response.json()

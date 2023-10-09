@@ -169,7 +169,7 @@ def onButtonRelease(pushedButton, listener):
                             selectedFile_name = pathFiles[selectedFile-1]
                             selectedFile_path = filePath + selectedFile_name
                             subprocess.run(['cancel', '-a']);
-                            subprocess.run(["lp", selectedFile_path + '.pdf'], capture_output=True)
+                            subprocess.run(["lp", "-o fit-to-page", selectedFile_path + '.pdf'], capture_output=True)
                             print('Printing -> ' + selectedFile_path)
                             os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
                             # dotenv.set_key('home/pi/Desktop/BHS-Upgrader/.env', "printCount", os.environ["printCount"])
@@ -211,8 +211,10 @@ while True:
         if listener is None or not listener.is_alive():
             listener = run_listener()
     else:
-        if listener is not None and listener.is_alive():
+        try:
             listener.stop()
             # listener.join()
             listener = None
+        except Exception as e:
+            print(e)
     time.sleep(30)
