@@ -8,7 +8,7 @@ class anydesk:
 
     def setPassword(self, password: str) -> bool:
         try:
-            run('echo "fattoli3417" | sudo anydesk --set-password', shell=True)
+            run('echo "secretkey" | sudo anydesk --set-password', shell=True)
             return True
         except Exception as e:
 
