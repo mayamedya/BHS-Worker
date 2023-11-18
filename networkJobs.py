@@ -31,6 +31,11 @@ class networkJobs:
     def setup(self) -> bool:
 
         try:
+            req = r.get('http://clients3.google.com/generate_204')
+            if req.status_code != 204:
+                print("No internet connection found... Activating device at local mode")
+                return True
+                
             wifiName = subprocess.check_output("iw dev wlan0 link | grep SSID | awk '{print $2}'", stderr=subprocess.STDOUT, shell=True)
             time.sleep(3)
             setupCredentials = {
