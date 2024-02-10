@@ -11,6 +11,8 @@ import dotenv
 import subprocess
 import random
 from anydesk import anydesk
+import usb.core
+import re
 
 adk = anydesk()
 
@@ -80,6 +82,46 @@ def asyncDevice():
             time.sleep(10)
 
 
+def checkPrinter():
+    NJ = networkJobs(config['deviceID'], config['authKey'])
+    last_call = 0
+    while True:
+        try:
+            dev = usb.core.find(idVendor=0x0fe6, idProduct=0x811e)
+
+            if not dev:
+                print("Device not found.")
+                NJ.updatePrinterStatus(0)
+                return 0
+
+            dev.reset()
+
+            if dev.is_kernel_driver_active(0):
+                dev.detach_kernel_driver(0)
+
+            dev.set_configuration()
+
+            EP_OUT = 0x03
+            EP_IN = 0x82
+
+            data = [0x10, 0x04, 0x02]
+            dev.write(EP_OUT, data)
+
+            response = dev.read(EP_IN, 8, timeout=10000)
+            pattern = re.compile(r"array\('B', \[[0-9]+\]\)", re.IGNORECASE)
+            res_code = pattern.match(response)
+
+            if(res_code != last_call):
+                NJ.updatePrinterStatus(res_code)
+
+            time.sleep(30)
+        except Exception as e:
+            print(e)
+            time.sleep(30)
+
+
+
+
 NJ = networkJobs(config['deviceID'], config['authKey'])
 
 if not NJ.isRegistered():
@@ -118,6 +160,10 @@ while not config["isRegistered"]:
 
 deviceAsync = Thread(target=asyncDevice)
 deviceAsync.start()
+
+printerStatus = Thread(target=checkPrinter)
+printerStatus.start()
+
 FJ = fileJobs(config['buttonCount'], config['fileLocation'])
 
 

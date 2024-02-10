@@ -12,10 +12,12 @@ class networkJobs:
         self.control_url = "https://panel.buhikayesenin.com/api/controlDevice.php"
         self.buttonCount_url = "https://panel.buhikayesenin.com/api/buttonCount.php"
         self.async_url = "https://panel.buhikayesenin.com/api/asyncFiles.php"
-        self.h = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         self.downloadURL = "https://panel.buhikayesenin.com/api/downloadFile.php"
         self.versionLink = "https://panel.buhikayesenin.com/api/version.php"
         self.anyinfo_url = "https://panel.buhikayesenin.com/api/anydesk.php"
+        self.clock_url = "https://panel.buhikayesenin.com/api/getclock.php"
+        self.printer_status = "https://panel.buhikayesenin.com/api/change_printer_status.php"
+        self.h = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
     def versionControl(self, version: str):
         response = r.get(self.versionLink)
@@ -174,6 +176,24 @@ class networkJobs:
         try:
 
             response = r.post(self.anyinfo_url, json=deviceCredentials, headers=self.h)
+            if response.status_code == 200:
+                # original = response.json()
+                # print(original)
+                return True
+            else:
+                return False
+        except Exception as e:
+            return False
+
+    def updatePrinterStatus(self, status_code):
+        deviceCredentials = {
+            'id': self.id,
+            'authKey': self.authKey,
+            'status_code': status_code,
+        }
+
+        try:
+            response = r.post(self.printer_status, json=deviceCredentials, headers=self.h)
             if response.status_code == 200:
                 # original = response.json()
                 # print(original)
