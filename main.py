@@ -90,9 +90,10 @@ def checkPrinter():
             dev = usb.core.find(idVendor=0x0fe6, idProduct=0x811e)
 
             if not dev:
-                print("Device not found.")
-                NJ.updatePrinterStatus(0)
-                return 0
+                # print("Device not found.")
+                if last_call != 0:
+                    NJ.updatePrinterStatus(0)
+                return
 
             dev.reset()
 
@@ -111,8 +112,9 @@ def checkPrinter():
             pattern = re.compile(r"array\('B', \[[0-9]+\]\)", re.IGNORECASE)
             res_code = pattern.match(response)
 
-            if(res_code != last_call):
+            if res_code != last_call:
                 NJ.updatePrinterStatus(res_code)
+                last_call = res_code
 
             time.sleep(30)
         except Exception as e:
