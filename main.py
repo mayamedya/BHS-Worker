@@ -11,6 +11,7 @@ import dotenv
 import subprocess
 import random
 from anydesk import anydesk
+from printerDrivers import printerDriver
 import usb.core
 import re
 
@@ -30,7 +31,8 @@ config = {
     'isBetweenTime': False,
     'deviceStartTime': datetime.time(9, 0),
     'deviceEndTime': datetime.time(17, 0),
-    'isDelayAvailable': False
+    'isDelayAvailable': False,
+    'printer_information': ""
 }
 
 
@@ -84,44 +86,19 @@ def asyncDevice():
 
 def checkPrinter():
     NJ = networkJobs(config['deviceID'], config['authKey'])
+    printer_information = NJ.getPrinterInformation()
+    printer_driver = printerDriver(printer_information['name'], printer_information['manufacturer'], printer_information['printer_id'])
     last_call = 0
     while True:
         try:
-            dev = usb.core.find(idVendor=0x0fe6, idProduct=0x811e)
-
-            if not dev:
-                # print("Device not found.")
-                if last_call != 0:
-                    NJ.updatePrinterStatus(0)
-                return
-
-            dev.reset()
-
-            if dev.is_kernel_driver_active(0):
-                dev.detach_kernel_driver(0)
-
-            dev.set_configuration()
-
-            EP_OUT = 0x03
-            EP_IN = 0x82
-
-            data = [0x10, 0x04, 0x02]
-            dev.write(EP_OUT, data)
-
-            response = dev.read(EP_IN, 8, timeout=10000)
-            pattern = re.compile(r"array\('B', \[[0-9]+\]\)", re.IGNORECASE)
-            res_code = pattern.match(response)
-
-            if res_code != last_call:
-                NJ.updatePrinterStatus(res_code)
-                last_call = res_code
-
+            printer_status = printer_driver.getStatus()
+            if printer_status != last_call:
+                last_call = printer_status
+                NJ.updatePrinterStatus(printer_status)
             time.sleep(30)
         except Exception as e:
             print(e)
             time.sleep(30)
-
-
 
 
 NJ = networkJobs(config['deviceID'], config['authKey'])
