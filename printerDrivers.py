@@ -12,31 +12,41 @@ class printerDriver:
         return self.convertPrinterToFunction(self.printerId)
 
     def translateCode(self, code):
-        translateCode = {
-            "kp300v":{
-                -1: "Bilinmiyor",
-                0: "İyi",
-                4: "Kağıt Yok",
-            },
-            "kp347":{
-                0: "Bilinmiyor",
-                18: "İyi",
-                114: "Kağıt Yok",
-                118: "Arıza",
+        try:
+            translateCode = {
+                "kp300v": {
+                    "-1": "Bilinmiyor",
+                    "0": "İyi",
+                    "4": "Kağıt Yok",
+                },
+                "kp347": {
+                    "0": "Bilinmiyor",
+                    "18": "İyi",
+                    "114": "Kağıt Yok",
+                    "118": "Arıza",
+                }
             }
-        }
 
-        if not translateCode[code]:
+            if not translateCode[self.printerId][str(code)]:
+                return "Bilinmiyor"
+
+            return translateCode[self.printerId][str(code)]
+        except Exception as e:
+            print("translateCode")
+            print(e)
             return "Bilinmiyor"
 
-        return translateCode[code]
-
     def convertPrinterToFunction(self, printerId):
-        if printerId == "kp347":
-            return self.printer_0001()
+        try:
+            if printerId == "kp347":
+                return self.printer_0001()
 
-        if printerId == "kp300v":
-            return self.printer_0002()
+            if printerId == "kp300v":
+                return self.printer_0002()
+        except Exception as e:
+            print("Convert Printer To Function")
+            print(e)
+            return "Bilinmiyor"
 
     def printer_0001(self):
         try:
@@ -59,8 +69,7 @@ class printerDriver:
             dev.write(EP_OUT, data)
 
             response = dev.read(EP_IN, 8, timeout=10000)
-            pattern = re.compile(r"array\('B', \[[0-9]+\]\)", re.IGNORECASE)
-            res_code = pattern.match(response)
+            res_code = response[0]
 
             return self.translateCode(res_code)
         except Exception as e:
@@ -88,8 +97,7 @@ class printerDriver:
             dev.write(EP_OUT, data)
 
             response = dev.read(EP_IN, 8, timeout=10000)
-            pattern = re.compile(r"array\('B', \[[0-9]+\]\)", re.IGNORECASE)
-            res_code = pattern.match(response)
+            res_code = response[0]
 
             return self.translateCode(res_code)
         except Exception as e:

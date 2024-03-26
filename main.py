@@ -88,7 +88,7 @@ def checkPrinter():
     NJ = networkJobs(config['deviceID'], config['authKey'])
     printer_information = NJ.getPrinterInformation()
     printer_driver = printerDriver(printer_information['printerName'], printer_information['printerManufacturer'], printer_information['printerID'])
-    last_call = 0
+    last_call = ""
     while True:
         try:
             printer_status = printer_driver.getStatus()
