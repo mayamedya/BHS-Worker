@@ -87,7 +87,7 @@ def asyncDevice():
 def checkPrinter():
     NJ = networkJobs(config['deviceID'], config['authKey'])
     printer_information = NJ.getPrinterInformation()
-    printer_driver = printerDriver(printer_information['name'], printer_information['manufacturer'], printer_information['printer_id'])
+    printer_driver = printerDriver(printer_information['printerName'], printer_information['printerManufacturer'], printer_information['printerID'])
     last_call = 0
     while True:
         try:

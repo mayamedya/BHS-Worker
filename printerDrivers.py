@@ -9,7 +9,7 @@ class printerDriver:
         self.printerId = printerId
 
     def getStatus(self):
-        return
+        return self.convertPrinterToFunction(self.printerId)
 
     def translateCode(self, code):
         translateCode = {

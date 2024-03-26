@@ -17,7 +17,7 @@ class networkJobs:
         self.anyinfo_url = "https://panel.buhikayesenin.com/api/anydesk.php"
         self.clock_url = "https://panel.buhikayesenin.com/api/getclock.php"
         self.printer_status = "https://panel.buhikayesenin.com/api/change_printer_status.php"
-        self.printer_information = "https://panel.buhikayesenin.com/get_printer_information.php"
+        self.printer_information = "https://panel.buhikayesenin.com/api/get_printer_information.php"
         self.h = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
     def versionControl(self, version: str):
@@ -191,11 +191,11 @@ class networkJobs:
         except Exception as e:
             return False
 
-    def updatePrinterStatus(self, status_code):
+    def updatePrinterStatus(self, status_string):
         deviceCredentials = {
             'id': self.id,
             'authKey': self.authKey,
-            'status_code': status_code,
+            'status_code': status_string,
         }
 
         try:
