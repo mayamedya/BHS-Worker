@@ -91,10 +91,10 @@ def checkPrinter():
     last_call = ""
     while True:
         try:
-            printer_status = printer_driver.getStatus()
+            printer_status, level_code = printer_driver.getStatus()
             if printer_status != last_call:
                 last_call = printer_status
-                NJ.updatePrinterStatus(printer_status)
+                NJ.updatePrinterStatus(printer_status, level_code)
             time.sleep(30)
         except Exception as e:
             print(e)

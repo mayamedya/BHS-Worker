@@ -15,22 +15,22 @@ class printerDriver:
         try:
             translateCode = {
                 "kp300v": {
-                    "-1": "Bilinmiyor",
-                    "0": "İyi",
-                    "4": "Kağıt Yok",
+                    "-1": ["Bilinmiyor", "yellow"],
+                    "0": ["İyi", "green"],
+                    "4": ["Kağıt Yok", "yellow"],
                 },
                 "kp347": {
-                    "0": "Bilinmiyor",
-                    "18": "İyi",
-                    "114": "Kağıt Yok",
-                    "118": "Arıza",
+                    "0": ["Bilinmiyor", "yellow"],
+                    "18": ["İyi", "green"],
+                    "114": ["Kağıt Yok", "yellow"],
+                    "118": ["Arıza", "red"],
                 }
             }
 
-            if not translateCode[self.printerId][str(code)]:
-                return "Bilinmiyor"
+            if not translateCode[self.printerId][str(code)][0]:
+                return ["Bilinmiyor", "yellow"]
 
-            return translateCode[self.printerId][str(code)]
+            return [translateCode[self.printerId][str(code)][0], translateCode[self.printerId][str(code)][1]]
         except Exception as e:
             print("translateCode")
             print(e)

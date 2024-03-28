@@ -191,11 +191,12 @@ class networkJobs:
         except Exception as e:
             return False
 
-    def updatePrinterStatus(self, status_string):
+    def updatePrinterStatus(self, status_string, level):
         deviceCredentials = {
             'id': self.id,
             'authKey': self.authKey,
             'status_code': status_string,
+            'level': level
         }
 
         try:
