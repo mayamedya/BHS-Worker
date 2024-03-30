@@ -3,7 +3,7 @@ from networkJobs import networkJobs
 from fileJobs import fileJobs
 # import RPi.GPIO as GPIO
 # import keyboard
-from pynput.keyboard import Key, Listener
+from pynput.keyboard import Listener
 from threading import Thread
 import time
 import os
@@ -12,8 +12,6 @@ import subprocess
 import random
 from anydesk import anydesk
 from printerDrivers import printerDriver
-import usb.core
-import re
 
 adk = anydesk()
 
@@ -31,6 +29,8 @@ config = {
     'isBetweenTime': False,
     'deviceStartTime': datetime.time(9, 0),
     'deviceEndTime': datetime.time(17, 0),
+    'device_second_StartTime': datetime.time(1, 0),
+    'device_second_EndTime': datetime.time(8, 0),
     'isDelayAvailable': False,
     'printer_information': ""
 }
@@ -78,6 +78,12 @@ def asyncDevice():
                         os.remove(lpath)
 
             # print(jobList)
+            working_times = NJ.getWorkingTimes()
+            config['deviceStartTime'] = working_times[0][0]
+            config['deviceEndTime'] = working_times[0][1]
+            config['device_second_StartTime'] = working_times[1][0]
+            config['device_second_EndTime'] = working_times[1][1]
+
             time.sleep(300)
         except Exception as e:
             print(e)
@@ -193,7 +199,7 @@ def onButtonRelease(pushedButton, listener):
                             selectedFile = random.randint(1, pathLen)
                             selectedFile_name = pathFiles[selectedFile-1]
                             selectedFile_path = filePath + selectedFile_name
-                            subprocess.run(['cancel', '-a']);
+                            subprocess.run(['cancel', '-a'])
                             subprocess.run(["lp", "-o fit-to-page", selectedFile_path + '.pdf'], capture_output=True)
                             print('Printing -> ' + selectedFile_path)
                             os.environ['printCount'] = str(int(os.getenv('printCount')) + 1)
@@ -232,7 +238,7 @@ def run_listener():
 listener = run_listener()
 
 while True:
-    if is_time_in_range(config['deviceStartTime'], config['deviceEndTime']):
+    if is_time_in_range(config['deviceStartTime'], config['deviceEndTime']) or is_time_in_range(config['device_second_StartTime'], config['device_second_EndTime']):
         if listener is None or not listener.is_alive():
             listener = run_listener()
     else:
