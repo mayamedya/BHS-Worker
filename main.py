@@ -95,10 +95,10 @@ def checkPrinter():
             if printer_status != last_call:
                 last_call = printer_status
                 NJ.updatePrinterStatus(printer_status, level_code)
-            time.sleep(30)
+            time.sleep(360)
         except Exception as e:
             print(e)
-            time.sleep(30)
+            time.sleep(360)
 
 
 NJ = networkJobs(config['deviceID'], config['authKey'])

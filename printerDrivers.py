@@ -70,6 +70,7 @@ class printerDriver:
 
             response = dev.read(EP_IN, 8, timeout=10000)
             res_code = response[0]
+            dev.reset()
 
             return self.translateCode(res_code)
         except Exception as e:
@@ -98,6 +99,7 @@ class printerDriver:
 
             response = dev.read(EP_IN, 8, timeout=10000)
             res_code = response[0]
+            dev.reset()
 
             return self.translateCode(res_code)
         except Exception as e:
