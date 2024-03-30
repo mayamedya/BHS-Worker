@@ -34,7 +34,7 @@ class printerDriver:
         except Exception as e:
             print("translateCode")
             print(e)
-            return "Bilinmiyor"
+            return ["Bilinmiyor", "yellow"]
 
     def convertPrinterToFunction(self, printerId):
         try:
@@ -46,7 +46,7 @@ class printerDriver:
         except Exception as e:
             print("Convert Printer To Function")
             print(e)
-            return "Bilinmiyor"
+            return ["Bilinmiyor", "yellow"]
 
     def printer_0001(self):
         try:
