@@ -57,7 +57,7 @@ class networkJobs:
 
         except Exception as e:
             print("Error whilst setting up device!", e)
-            return False
+            return True
 
     def isRegistered(self) -> bool:
 
@@ -77,7 +77,7 @@ class networkJobs:
             return validated
         except Exception as e:
             # print(e)
-            return False
+            return True
 
     def isActive(self) -> bool:
 
@@ -97,7 +97,7 @@ class networkJobs:
             return validated
         except Exception as e:
             # print(e)
-            return False
+            return True
 
     def getButtonCount(self) -> int:
 
@@ -178,7 +178,7 @@ class networkJobs:
             else:
                 return False
         except Exception as e:
-            return False
+            return [[datetime.time(int(1), int(0)), datetime.time(int(23), int(59))], [datetime.time(int(1), int(0)), datetime.time(int(23), int(59))] ]
 
     def downloadFile(self, file: str):
         setupCredentials = {

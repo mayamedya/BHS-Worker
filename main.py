@@ -91,19 +91,24 @@ def asyncDevice():
 
 
 def checkPrinter():
-    NJ = networkJobs(config['deviceID'], config['authKey'])
-    printer_information = NJ.getPrinterInformation()
-    printer_driver = printerDriver(printer_information['printerName'], printer_information['printerManufacturer'], printer_information['printerID'])
-    last_call = ""
-    while True:
-        try:
-            printer_status, level_code = printer_driver.getStatus()
-            if printer_status != last_call:
-                last_call = printer_status
-                NJ.updatePrinterStatus(printer_status, level_code)
-            time.sleep(360)
-        except Exception as e:
-            print(e)
+    try:
+        NJ = networkJobs(config['deviceID'], config['authKey'])
+        printer_information = NJ.getPrinterInformation()
+        printer_driver = printerDriver(printer_information['printerName'], printer_information['printerManufacturer'], printer_information['printerID'])
+        last_call = ""
+        while True:
+            try:
+                printer_status, level_code = printer_driver.getStatus()
+                if printer_status != last_call:
+                    last_call = printer_status
+                    NJ.updatePrinterStatus(printer_status, level_code)
+                time.sleep(360)
+            except Exception as e:
+                print(e)
+                time.sleep(360)
+    except Exception as e:
+        while True:
+            print("Printer is offline. To reactivate, please connect to wifi and restart device")
             time.sleep(360)
 
 
