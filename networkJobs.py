@@ -73,6 +73,8 @@ class networkJobs:
                 return True
 
             response = r.post(self._control_url, json=setupCredentials, headers=self._h)
+            if response.text and response.text == '-D':
+                return False
             validated = True if response.json()['status'] == 1 or response.json()['status'] == 2 else False
             return validated
         except Exception as e:
