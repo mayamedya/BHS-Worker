@@ -1,10 +1,12 @@
 import os
-
 from os import path, mkdir, listdir, remove
+
+
 class fileJobs:
-    def __init__(self, bc, fl):
-        self.buttonCount = bc
-        self.fileLocation = fl
+    def __init__(self):
+        self.buttonCount = 8
+        self.fileLocation = f"{os.getcwd()}/pdf/"
+        print(f"[FILE CONTROLLER | MAIN] Completed successfully")
 
     def generateFolders(self):
         for file in range(self.buttonCount):
