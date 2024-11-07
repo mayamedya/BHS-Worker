@@ -41,7 +41,6 @@ class statistics:
             file.truncate()
 
     def log_printer(self, printer_model, status_code):
-
         with open(self.statistics_file, 'r+') as file:
             content = file.read()
             if content:
@@ -54,7 +53,7 @@ class statistics:
                 "model": printer_model,
                 "code": status_code,
                 "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                })
+            })
 
             file.seek(0)
             json.dump(json_statistics, file)
