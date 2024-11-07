@@ -41,8 +41,21 @@ class statistics:
             file.truncate()
 
     def log_printer(self, printer_model, status_code):
-        with open(self.statistics_file) as file:
-            json_statistics = json.loads(file.read())
-            json_statistics['data'].append({"job": "printer_control", "model": printer_model, "code": status_code, "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S")})
-            file.write(json.dumps(json_statistics))
-            file.close()
+
+        with open(self.statistics_file, 'r+') as file:
+            content = file.read()
+            if content:
+                json_statistics = json.loads(content)
+            else:
+                json_statistics = {"data": []}
+
+            json_statistics['data'].append({
+                "job": "printer_control",
+                "model": printer_model,
+                "code": status_code,
+                "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                })
+
+            file.seek(0)
+            json.dump(json_statistics, file)
+            file.truncate()
