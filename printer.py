@@ -80,7 +80,8 @@ class Printer:
             EP_OUT = 0x03
             EP_IN = 0x81
 
-            data = [0x1B, 0X76]
+            data = [0x10,0x04,0X04]
+		#data = [0x10, 0x04,0x04]
             dev.write(EP_OUT, data)
 
             response = dev.read(EP_IN, 8, timeout=10000)
@@ -128,8 +129,12 @@ class Printer:
             translateCode = {
                 "kp300v": {
                     "-1": ["Bilinmiyor", "yellow"],
-                    "0": ["İyi", "green"],
-                    "4": ["Kağıt Yok", "yellow"],
+                    #"0": ["İyi", "green"],
+                    #"4": ["Kağıt Yok", "yellow"],
+                    "18": ["İyi Durumda", "green"],
+                    "30": ["Kağıt Bitmek Üzere", "yellow"],
+                    "114": ["Rulo Var Kağıt Yok", "yellow"],
+                    "126": ["Kağıt Yok", "red"],
                 },
                 "kp347": {
                     "0": ["Bilinmiyor", "yellow"],
