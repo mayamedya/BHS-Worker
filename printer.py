@@ -8,7 +8,7 @@ import os
 class Printer:
     def __init__(self, printer_model, statistics):
         print(f"[PRINTER | MAIN] Printer process opened using printer:{printer_model}")
-        if printer_model == '':
+        if printer_model == 'None':
             self.printer_model = 'kp300v'
         else:
             self.printer_model = printer_model
