@@ -1,4 +1,4 @@
-python-dotenv~=0.21.0
+python-dotenv~=0.12.0
 requests~=2.21.0
 keyboard
 pyusb
